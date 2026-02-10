@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>北海道 2026</title>
+<meta name="description" content="2026 北海道冬日行程">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏔</text></svg>">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f172a;
+  --surface:#1e293b;
+  --surface2:#334155;
+  --text:#f1f5f9;
+  --text2:#94a3b8;
+  --accent:#38bdf8;
+  --accent2:#818cf8;
+  --warm:#f59e0b;
+  --green:#34d399;
+  --red:#f87171;
+  --pink:#f472b6;
+  --radius:16px;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Noto Sans TC","Noto Sans JP",system-ui,sans-serif;
+  background:var(--bg);color:var(--text);
+  line-height:1.6;
+  padding:var(--safe-top) 0 var(--safe-bottom);
+  min-height:100dvh;
+  overflow-x:hidden;
+}
+
+/* Hero */
+.hero{
+  position:relative;
+  padding:60px 20px 40px;
+  text-align:center;
+  background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#164e63 100%);
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 30% 20%,rgba(56,189,248,.15) 0%,transparent 60%),
+             radial-gradient(ellipse at 70% 80%,rgba(129,140,248,.1) 0%,transparent 60%);
+}
+.hero-snow{position:absolute;inset:0;pointer-events:none;opacity:.4}
+.hero h1{font-size:2rem;font-weight:800;letter-spacing:-.02em;position:relative}
+.hero h1 span{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero .dates{color:var(--text2);font-size:.95rem;margin-top:8px;position:relative}
+.hero .tag-row{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap;position:relative}
+.tag{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600;
+  background:rgba(255,255,255,.08);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.1);
+}
+
+/* Nav */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(15,23,42,.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.nav::-webkit-scrollbar{display:none}
+.nav-inner{display:flex;gap:4px;padding:8px 16px;min-width:max-content}
+.nav a{
+  padding:8px 16px;border-radius:12px;font-size:.85rem;font-weight:600;
+  color:var(--text2);text-decoration:none;white-space:nowrap;
+  transition:all .2s;
+}
+.nav a:hover,.nav a.active{background:var(--surface);color:var(--text)}
+.nav a.today{color:var(--accent);border:1px solid rgba(56,189,248,.3)}
+
+/* Section */
+.section{padding:24px 16px;max-width:640px;margin:0 auto}
+.section-title{
+  font-size:1.3rem;font-weight:800;margin-bottom:20px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-title .icon{font-size:1.4rem}
+
+/* Day card */
+.day-card{
+  background:var(--surface);border-radius:var(--radius);
+  margin-bottom:16px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);
+  transition:transform .2s;
+}
+.day-card:active{transform:scale(.98)}
+.day-header{
+  padding:16px 20px;cursor:pointer;
+  display:flex;align-items:center;gap:14px;
+  -webkit-tap-highlight-color:transparent;
+}
+.day-num{
+  width:48px;height:48px;border-radius:14px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-weight:800;font-size:.75rem;line-height:1.2;flex-shrink:0;
+}
+.day-info{flex:1;min-width:0}
+.day-info h3{font-size:1rem;font-weight:700;line-height:1.3}
+.day-info .location{font-size:.85rem;color:var(--text2);margin-top:2px}
+.day-chevron{color:var(--text2);transition:transform .3s;flex-shrink:0;font-size:1.2rem}
+.day-card.open .day-chevron{transform:rotate(180deg)}
+.day-body{
+  max-height:0;overflow:hidden;transition:max-height .4s ease;
+}
+.day-card.open .day-body{max-height:2000px}
+.day-content{padding:0 20px 20px}
+
+/* Timeline items */
+.tl{position:relative;padding-left:24px}
+.tl::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--surface2);border-radius:1px}
+.tl-item{position:relative;padding-bottom:16px}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{
+  position:absolute;left:-24px;top:6px;
+  width:16px;height:16px;border-radius:50%;
+  border:2px solid var(--surface);
+}
+.tl-dot.flight{background:var(--accent)}
+.tl-dot.hotel{background:var(--pink)}
+.tl-dot.transport{background:var(--warm)}
+.tl-dot.activity{background:var(--green)}
+.tl-dot.car{background:var(--accent2)}
+.tl-time{font-size:.8rem;color:var(--text2);font-weight:600;font-variant-numeric:tabular-nums}
+.tl-title{font-weight:600;font-size:.9rem;margin-top:2px}
+.tl-desc{font-size:.85rem;color:var(--text2);margin-top:2px}
+
+/* Info cards */
+.info-card{
+  background:var(--surface);border-radius:var(--radius);padding:16px 20px;
+  margin-bottom:12px;border:1px solid rgba(255,255,255,.06);
+}
+.info-card h4{font-size:.9rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.info-row{display:flex;justify-content:space-between;padding:6px 0;font-size:.85rem;border-bottom:1px solid rgba(255,255,255,.04)}
+.info-row:last-child{border-bottom:none}
+.info-label{color:var(--text2)}
+.info-value{font-weight:600;text-align:right}
+.info-value.mono{font-family:"SF Mono",monospace;font-size:.8rem;letter-spacing:.02em}
+.info-value a{color:var(--accent);text-decoration:none}
+
+/* Badge */
+.badge{
+  display:inline-block;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:700;
+}
+.badge-meal{background:rgba(52,211,153,.15);color:var(--green)}
+.badge-booking{background:rgba(56,189,248,.15);color:var(--accent)}
+.badge-alert{background:rgba(248,113,113,.15);color:var(--red)}
+
+/* Color coding for day nums */
+.c-blue{background:linear-gradient(135deg,#1e3a5f,#164e63);color:var(--accent)}
+.c-purple{background:linear-gradient(135deg,#312e81,#4c1d95);color:var(--accent2)}
+.c-warm{background:linear-gradient(135deg,#78350f,#92400e);color:var(--warm)}
+.c-green{background:linear-gradient(135deg,#064e3b,#065f46);color:var(--green)}
+.c-pink{background:linear-gradient(135deg,#831843,#9d174d);color:var(--pink)}
+
+/* Footer */
+.footer{text-align:center;padding:40px 16px 60px;color:var(--text2);font-size:.8rem}
+.footer a{color:var(--accent);text-decoration:none}
+
+/* Install banner */
+.install-banner{
+  display:none;position:fixed;bottom:20px;left:16px;right:16px;z-index:200;
+  background:var(--surface);border-radius:var(--radius);padding:16px 20px;
+  border:1px solid rgba(56,189,248,.2);
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  animation:slideUp .4s ease;
+}
+@keyframes slideUp{from{transform:translateY(100px);opacity:0}to{transform:translateY(0);opacity:1}}
+.install-banner .btn{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;border:none;padding:10px 20px;border-radius:10px;
+  font-weight:700;font-size:.9rem;cursor:pointer;width:100%;margin-top:12px;
+}
+.install-banner .dismiss{
+  position:absolute;top:12px;right:16px;background:none;border:none;
+  color:var(--text2);font-size:1.2rem;cursor:pointer;
+}
+
+/* Responsive */
+@media(min-width:640px){
+  .section{padding:32px 24px}
+  .hero{padding:80px 24px 50px}
+  .hero h1{font-size:2.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <canvas class="hero-snow" id="snow"></canvas>
+  <h1><span>北海道</span> 冬日旅行</h1>
+  <div class="dates">2026/02/17 (二) - 02/28 (六) &middot; 11 天</div>
+  <div class="tag-row">
+    <span class="tag">知床</span>
+    <span class="tag">釧路</span>
+    <span class="tag">旭川</span>
+    <span class="tag">富良野</span>
+    <span class="tag">美瑛</span>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#flights">航班</a>
+    <a href="#day-1">D1</a><a href="#day-2">D2</a><a href="#day-3">D3</a>
+    <a href="#day-4">D4</a><a href="#day-5">D5</a><a href="#day-6">D6</a>
+    <a href="#day-7">D7</a><a href="#day-8">D8</a><a href="#day-9">D9</a>
+    <a href="#day-10">D10</a><a href="#day-11">D11</a>
+    <a href="#transport">交通</a>
+    <a href="#hotels">住宿</a>
+    <a href="#insurance">保險</a>
+  </div>
+</nav>
+
+<!-- Flights -->
+<div class="section" id="flights">
+  <div class="section-title"><span class="icon">✈</span> 航班</div>
+  <div class="info-card">
+    <h4>02/17 (二) 台北 → 東京</h4>
+    <div class="info-row"><span class="info-label">航班</span><span class="info-value">樂桃 MM860</span></div>
+    <div class="info-row"><span class="info-label">起飛</span><span class="info-value">桃園 TPE T1</span></div>
+    <div class="info-row"><span class="info-label">抵達</span><span class="info-value">羽田 HND T3 (00:50+1)</span></div>
+  </div>
+  <div class="info-card">
+    <h4>02/18 (三) 東京 → 女滿別</h4>
+    <div class="info-row"><span class="info-label">航班</span><span class="info-value">Air Do HD075</span></div>
+    <div class="info-row"><span class="info-label">起飛</span><span class="info-value">羽田 HND T2 07:00</span></div>
+    <div class="info-row"><span class="info-label">抵達</span><span class="info-value">女滿別 MMB</span></div>
+  </div>
+</div>
+
+<!-- Day 1 -->
+<div class="section" id="day-1">
+<div class="day-card">
+  <div class="day-header" onclick="toggle(this)">
+    <div class="day-num c-blue"><div>02/17</div><div>二</div></div>
+    <div class="day-info"><h3>出發日：台北 → 東京</h3><div class="location">桃園機場 T1 → 羽田 T3</div></div>
+    <div class="day-chevron">&#x25BC;</div>
+  </div>
+  <div class="day-body"><div class="day-content">
+    <div class="tl">
+      <div class="tl-item"><div class="tl-dot flight"></div>
+        <div class="tl-time">晚間</div>
+        <div class="tl-title">樂桃 MM860 桃園 → 羽田</div>
+        <div class="tl-desc">紅眼班機，隔天 00:50 抵達羽田 T3</div>
+      </div>
+      <div class="tl-item"><div class="tl-dot hotel"></div>
+        <div class="tl-time">00:50+1</div>
+        <div class="tl-title">羽田機場過夜</div>
+        <div class="tl-desc">轉機等待，隔天一早搭 Air Do 飛女滿別</div>
+      </div>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<!-- Day 2 -->
+<div class="section" id="day-2">
+<div class="day-card">
+  <div class="day-header" onclick="toggle(this)">
+    <div class="day-num c-blue"><div>02/18</div><div>三</div></div>
+    <div class="day-info"><h3>羽田 → 女滿別 → 知床</h3><div class="location">知床格蘭北辛夷飯店</div></div>
+    <div class="day-chevron">&#x25BC;</div>
+  </div>
+  <div class="day-body"><div class="day-content">
+    <div class="tl">
+      <div class="tl-item"><div class="tl-dot flight"></div>
+        <div class="tl-time">07:00</div>
+        <div class="tl-title">Air Do HD075 羽田 T2 → 女滿別</div>
+        <div class="tl-desc">約 1h45m 航程</div>
+      </div>
+      <div class="tl-item"><div class="tl-dot transport"></div>
+        <div class="tl-time">抵達後</div>
+        <div class="tl-title">女滿別 → 知床</div>
+        <div class="tl-desc">機場巴士或接駁前往知床</div>
+      </div>
+      <div class="tl-item"><div class="tl-dot hotel"></div>
+        <div class="tl-time">入住</div>
+        <div class="tl-title">知床格蘭北辛夷飯店</div>
+        <div class="tl-desc">本館海景雙床房 <span class="badge badge-meal">含早晚餐</span></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<!-- Day 3 -->
+<div class="section" id="day-3">
+<div class="day-card">
+  <div class="day-header" onclick="toggle(this)">
+    <div class="day-num c-blue"><div>02/19</div><div>四</div></div>
+    <div class="day-info"><h3>知床自由日</h3><div class="location">知床格蘭北辛夷飯店 (換房)</div></div>
+    <div class="day-chevron">&#x25BC;</div>
+  </div>
+  <div class="day-body"><div class="day-content">
+    <div class="tl">
+      <div class="tl-item"><div class="tl-dot activity"></div>
+        <div class="tl-time">全天</div>
+        <div class="tl-title">知床探索</div>
+        <div class="tl-desc">流冰、溫泉、自然景觀</div>
+      </div>
+      <div class="tl-item"><div class="tl-dot hotel"></div>
+        <div class="tl-time">入住</div>
+        <div class="tl-title">知床格蘭北辛夷 (換房)</div>
+        <div class="tl-desc">現代日式溫泉房 <span class="badge badge-meal">含早晚餐</span></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<!-- Day 4 -->
+<div class="section" id="day-4">
+<div class="day-card">
+  <div class="day-header" onclick="toggle(this)">
+    <div class="day-num c-purple"><div>02/20</div><div>五</div></div>
+    <div class="day-info"><h3>知床 → 釧路</h3><div class="location">巴士 + JR 知床摩周號</div></div>
+    <div class="day-chevron">&#x25BC;</div>
+  </div>
+  <div class="day-body"><div class="day-content">
+    <div class="tl">
+      <div class="tl-item"><div class="tl-dot transport"></div>
+        <div class="tl-time">09:43</div>
+        <div class="tl-title">知床機場線巴士</div>
+        <div class="tl-desc">北辛夷飯店門口上車 → 10:36 斜里巴士總站<br>無需預約，直接等車</div>
+      </div>
+      <div class="tl-item"><div class="tl-dot transport"></div>
+        <div class="tl-time">11:14</div>
+        <div class="tl-title">JR 快速「知床摩周號」</div>
+        <div class="tl-desc">JR 知床斜里站 → 13:34 JR 釧路站</div>
+      </div>
+      <div class="tl-item"><div class="tl-dot hotel"></div>
+        <div class="tl-time">入住</div>
+        <div class="tl-title">北海道康福特酒店 (釧路)</div>
+        <div class="tl-desc">經濟雙人房 <span class="badge badge-meal">含早餐</span></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<!-- Day 5 -->
+<div class="section" id="day-5">
+<div class="day-card">
+  <div class="day-header" onclick="toggle(this)">
+    <div class="day-num c-purple"><div>02/21</div><div>六</div></div>
+    <div class="day-info"><h3>釧路自由日</h3><div class="location">釧路市區</div></div>
+    <div class="day-chevron">&#x25BC;</div>
+  </div>
+  <div class="day-body"><div class="day-content">
+    <div class="tl">
+      <div class="tl-item"><div class="tl-dot activity"></div>
+        <div class="tl-time">全天</div>
+        <div class="tl-title">釧路探索</div>
+        <div class="tl-desc">釧路濕原、和商市場、幣舞橋夕陽</div>
+      </div>
+      <div class="tl-item"><div class="tl-dot hotel"></div>
+        <div class="tl-time">續住</div>
+        <div class="tl-title">北海道康福特酒店 (第 2 晚)</div>
+        <div class="tl-desc">經濟雙人房 <span class="badge badge-meal">含早餐</span></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<!-- Day 6 -->
+<div class="section" id="day-6">
+<div class="day-card">
+  <div class="day-header" onclick="toggle(this)">
+    <div class="day-num c-warm"><div>02/22</div><div>日</div></div>
+    <div class="day-info"><h3>釧路 → 網走 → 旭川</h3><div class="location">巴士 + JR 特急長途移動</div></div>
+    <div class="day-chevron">&#x25BC;</div>
+  </div>
+  <div class="day-body"><div class="day-content">
+    <div class="tl">
+      <div class="tl-item"><div class="tl-dot transport"></div>
+        <div class="tl-time">07:50</div>
+        <div class="tl-title">東北海道特急巴士 4 號</div>
+        <div class="tl-desc">釧路站前 → 15:05 網走站<br><span class="badge badge-booking">預約 1018929537</span></div>
+      </div>
+      <div class="tl-item"><div class="tl-dot transport"></div>
+        <div class="tl-time">15:40</div>
+        <div class="tl-title">JR 特急 Okhotsk 84 號 (首選)</div>
+        <div class="tl-desc">網走 → 20:01 旭川<br>備選：17:49 特急大雪 → 21:44 旭川</div>
+      </div>
+      <div class="tl-item"><div class="tl-dot hotel"></div>
+        <div class="tl-time">入住</div>
+        <div class="tl-title">HOTEL AMANEK (旭川)</div>
+        <div class="tl-desc">標準雙人房 (不含餐)</div>
+      </div>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<!-- Day 7 -->
+<div class="section" id="day-7">
+<div class="day-card">
+  <div class="day-header" onclick="toggle(this)">
+    <div class="day-num c-warm"><div>02/23</div><div>一</div></div>
+    <div class="day-info"><h3>旭川自由日</h3><div class="location">旭川市區</div></div>
+    <div class="day-chevron">&#x25BC;</div>
+  </div>
+  <div class="day-body"><div class="day-content">
+    <div class="tl">
+      <div class="tl-item"><div class="tl-dot activity"></div>
+        <div class="tl-time">全天</div>
+        <div class="tl-title">旭川探索</div>
+        <div class="tl-desc">旭山動物園、拉麵村、常盤公園</div>
+      </div>
+      <div class="tl-item"><div class="tl-dot hotel"></div>
+        <div class="tl-time">續住</div>
+        <div class="tl-title">HOTEL AMANEK (第 2 晚)</div>
+        <div class="tl-desc">標準雙人房 (不含餐)</div>
+      </div>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<!-- Day 8 -->
+<div class="section" id="day-8">
+<div class="day-card">
+  <div class="day-header" onclick="toggle(this)">
+    <div class="day-num c-warm"><div>02/24</div><div>二</div></div>
+    <div class="day-info"><h3>旭川自由日</h3><div class="location">旭川市區</div></div>
+    <div class="day-chevron">&#x25BC;</div>
+  </div>
+  <div class="day-body"><div class="day-content">
+    <div class="tl">
+      <div class="tl-item"><div class="tl-dot activity"></div>
+        <div class="tl-time">全天</div>
+        <div class="tl-title">旭川自由探索</div>
+        <div class="tl-desc">第三天旭川，可安排近郊半日遊</div>
+      </div>
+      <div class="tl-item"><div class="tl-dot hotel"></div>
+        <div class="tl-time">續住</div>
+        <div class="tl-title">HOTEL AMANEK (第 3 晚)</div>
+        <div class="tl-desc">標準雙人房 (不含餐)</div>
+      </div>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<!-- Day 9 -->
+<div class="section" id="day-9">
+<div class="day-card">
+  <div class="day-header" onclick="toggle(this)">
+    <div class="day-num c-green"><div>02/25</div><div>三</div></div>
+    <div class="day-info"><h3>取車 → 富良野</h3><div class="location">自駕開始！KICKS e-POWER 4WD</div></div>
+    <div class="day-chevron">&#x25BC;</div>
+  </div>
+  <div class="day-body"><div class="day-content">
+    <div class="tl">
+      <div class="tl-item"><div class="tl-dot car"></div>
+        <div class="tl-time">11:00</div>
+        <div class="tl-title">日產租車 旭川站前店 取車</div>
+        <div class="tl-desc">KICKS e-POWER 4WD<br><span class="badge badge-booking">預約 26012301772</span></div>
+      </div>
+      <div class="tl-item"><div class="tl-dot activity"></div>
+        <div class="tl-time">午後</div>
+        <div class="tl-title">旭川 → 富良野 自駕</div>
+        <div class="tl-desc">約 1.5h 車程，走國道沿線</div>
+      </div>
+      <div class="tl-item"><div class="tl-dot hotel"></div>
+        <div class="tl-time">入住</div>
+        <div class="tl-title">醋栗旅館 Pension Gooseberry</div>
+        <div class="tl-desc">富良野中御料，雙床房 <span class="badge badge-meal">含早餐</span></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<!-- Day 10 -->
+<div class="section" id="day-10">
+<div class="day-card">
+  <div class="day-header" onclick="toggle(this)">
+    <div class="day-num c-green"><div>02/26</div><div>四</div></div>
+    <div class="day-info"><h3>富良野 → 美瑛</h3><div class="location">自駕，丘陵風景</div></div>
+    <div class="day-chevron">&#x25BC;</div>
+  </div>
+  <div class="day-body"><div class="day-content">
+    <div class="tl">
+      <div class="tl-item"><div class="tl-dot car"></div>
+        <div class="tl-time">日間</div>
+        <div class="tl-title">富良野 → 美瑛 自駕</div>
+        <div class="tl-desc">Biei Farm、白鬚瀑布、拼布之路<br><span class="badge badge-alert">16:00 前回主要道路</span></div>
+      </div>
+      <div class="tl-item"><div class="tl-dot hotel"></div>
+        <div class="tl-time">入住</div>
+        <div class="tl-title">Meiji の丘の宿 (美瑛)</div>
+        <div class="tl-desc">拼布之路旁，雙床房 <span class="badge badge-meal">含早餐</span></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<!-- Day 11 -->
+<div class="section" id="day-11">
+<div class="day-card">
+  <div class="day-header" onclick="toggle(this)">
+    <div class="day-num c-pink"><div>02/27</div><div>五</div></div>
+    <div class="day-info"><h3>美瑛 → 旭川 → 千歲</h3><div class="location">還車，JR 南下</div></div>
+    <div class="day-chevron">&#x25BC;</div>
+  </div>
+  <div class="day-body"><div class="day-content">
+    <div class="tl">
+      <div class="tl-item"><div class="tl-dot car"></div>
+        <div class="tl-time">~12:00</div>
+        <div class="tl-title">日產租車 旭川站前店 還車</div>
+        <div class="tl-desc">自駕結束</div>
+      </div>
+      <div class="tl-item"><div class="tl-dot transport"></div>
+        <div class="tl-time">午後</div>
+        <div class="tl-title">旭川 → 千歲 (JR)</div>
+        <div class="tl-desc">特急列車南下</div>
+      </div>
+      <div class="tl-item"><div class="tl-dot hotel"></div>
+        <div class="tl-time">入住</div>
+        <div class="tl-title">JR Inn 千歲</div>
+        <div class="tl-desc">經濟雙人房 (不含餐)</div>
+      </div>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<!-- Transport -->
+<div class="section" id="transport">
+  <div class="section-title"><span class="icon">🚃</span> 交通詳細</div>
+
+  <div class="info-card">
+    <h4>02/20 (五) 知床 → 釧路</h4>
+    <div class="info-row"><span class="info-label">第一段</span><span class="info-value">知床機場線巴士</span></div>
+    <div class="info-row"><span class="info-label">上車</span><span class="info-value">09:43 北辛夷飯店門口</span></div>
+    <div class="info-row"><span class="info-label">下車</span><span class="info-value">10:36 斜里巴士總站</span></div>
+    <div class="info-row"><span class="info-label">備註</span><span class="info-value">無需預約，直接等車</span></div>
+    <div style="border-top:1px solid rgba(255,255,255,.06);margin:10px 0"></div>
+    <div class="info-row"><span class="info-label">第二段</span><span class="info-value">JR 快速「知床摩周號」</span></div>
+    <div class="info-row"><span class="info-label">發車</span><span class="info-value">11:14 JR 知床斜里站</span></div>
+    <div class="info-row"><span class="info-label">抵達</span><span class="info-value">13:34 JR 釧路站</span></div>
+  </div>
+
+  <div class="info-card">
+    <h4>02/22 (日) 釧路 → 網走 → 旭川</h4>
+    <div class="info-row"><span class="info-label">第一段</span><span class="info-value">東北海道特急巴士 4 號</span></div>
+    <div class="info-row"><span class="info-label">發車</span><span class="info-value">07:50 釧路站前</span></div>
+    <div class="info-row"><span class="info-label">抵達</span><span class="info-value">15:05 網走站</span></div>
+    <div class="info-row"><span class="info-label">預約號碼</span><span class="info-value mono">1018929537</span></div>
+    <div style="border-top:1px solid rgba(255,255,255,.06);margin:10px 0"></div>
+    <div class="info-row"><span class="info-label">第二段 (首選)</span><span class="info-value">JR 特急 Okhotsk 84 號</span></div>
+    <div class="info-row"><span class="info-label">發車</span><span class="info-value">15:40 網走</span></div>
+    <div class="info-row"><span class="info-label">抵達</span><span class="info-value">20:01 旭川</span></div>
+    <div style="border-top:1px solid rgba(255,255,255,.06);margin:10px 0"></div>
+    <div class="info-row"><span class="info-label">第二段 (備選)</span><span class="info-value">JR 特急大雪號</span></div>
+    <div class="info-row"><span class="info-label">發車</span><span class="info-value">17:49 網走</span></div>
+    <div class="info-row"><span class="info-label">抵達</span><span class="info-value">21:44 旭川</span></div>
+  </div>
+
+  <div class="info-card">
+    <h4>02/25-27 租車自駕</h4>
+    <div class="info-row"><span class="info-label">店舖</span><span class="info-value">日產租車 旭川站前店</span></div>
+    <div class="info-row"><span class="info-label">車型</span><span class="info-value">KICKS e-POWER 4WD</span></div>
+    <div class="info-row"><span class="info-label">取車</span><span class="info-value">02/25 11:00</span></div>
+    <div class="info-row"><span class="info-label">還車</span><span class="info-value">02/27 12:00 原店</span></div>
+    <div class="info-row"><span class="info-label">預約號碼</span><span class="info-value mono">26012301772</span></div>
+  </div>
+</div>
+
+<!-- Hotels -->
+<div class="section" id="hotels">
+  <div class="section-title"><span class="icon">🏨</span> 住宿總覽</div>
+
+  <div class="info-card">
+    <h4>知床格蘭北辛夷 (02/18-20, 2晚)</h4>
+    <div class="info-row"><span class="info-label">訂房人</span><span class="info-value">CHEN HAOSHEN</span></div>
+    <div class="info-row"><span class="info-label">預約號碼</span><span class="info-value mono">T6F0664F5CABF</span></div>
+    <div class="info-row"><span class="info-label">平台</span><span class="info-value">tripla</span></div>
+    <div class="info-row"><span class="info-label">餐食</span><span class="info-value"><span class="badge badge-meal">早晚餐</span></span></div>
+    <div class="info-row"><span class="info-label">官網</span><span class="info-value"><a href="https://www.shiretoko.co.jp/contact" target="_blank">shiretoko.co.jp</a></span></div>
+  </div>
+
+  <div class="info-card">
+    <h4>北海道康福特酒店 (02/20-22, 2晚)</h4>
+    <div class="info-row"><span class="info-label">訂房人</span><span class="info-value">WANG HSIU JU</span></div>
+    <div class="info-row"><span class="info-label">預約號碼</span><span class="info-value mono">6341.840.053</span></div>
+    <div class="info-row"><span class="info-label">PIN</span><span class="info-value mono">3510</span></div>
+    <div class="info-row"><span class="info-label">平台</span><span class="info-value">Booking.com</span></div>
+    <div class="info-row"><span class="info-label">餐食</span><span class="info-value"><span class="badge badge-meal">早餐</span></span></div>
+  </div>
+
+  <div class="info-card">
+    <h4>HOTEL AMANEK (02/22-25, 3晚)</h4>
+    <div class="info-row"><span class="info-label">訂房人</span><span class="info-value">WANG HSIU JU</span></div>
+    <div class="info-row"><span class="info-label">預約號碼</span><span class="info-value mono">6547.404.568</span></div>
+    <div class="info-row"><span class="info-label">PIN</span><span class="info-value mono">8296</span></div>
+    <div class="info-row"><span class="info-label">平台</span><span class="info-value">Booking.com</span></div>
+    <div class="info-row"><span class="info-label">餐食</span><span class="info-value">不含餐</span></div>
+  </div>
+
+  <div class="info-card">
+    <h4>醋栗旅館 Gooseberry (02/25-26, 1晚)</h4>
+    <div class="info-row"><span class="info-label">訂房人</span><span class="info-value">CHEN HAO SHEN</span></div>
+    <div class="info-row"><span class="info-label">預約號碼</span><span class="info-value mono">5025.118.692</span></div>
+    <div class="info-row"><span class="info-label">PIN</span><span class="info-value mono">6999</span></div>
+    <div class="info-row"><span class="info-label">平台</span><span class="info-value">Booking.com</span></div>
+    <div class="info-row"><span class="info-label">Email</span><span class="info-value"><a href="mailto:irish.gooseberry@gmail.com">irish.gooseberry@gmail.com</a></span></div>
+    <div class="info-row"><span class="info-label">餐食</span><span class="info-value"><span class="badge badge-meal">早餐</span></span></div>
+  </div>
+
+  <div class="info-card">
+    <h4>Meiji の丘の宿 (02/26-27, 1晚)</h4>
+    <div class="info-row"><span class="info-label">訂房人</span><span class="info-value">HAOSHEN CHEN</span></div>
+    <div class="info-row"><span class="info-label">平台</span><span class="info-value">直接郵件</span></div>
+    <div class="info-row"><span class="info-label">Email</span><span class="info-value"><a href="mailto:biei.meijinooka@gmail.com">biei.meijinooka@gmail.com</a></span></div>
+    <div class="info-row"><span class="info-label">餐食</span><span class="info-value"><span class="badge badge-meal">早餐</span></span></div>
+  </div>
+
+  <div class="info-card">
+    <h4>JR Inn 千歲 (02/27-28, 1晚)</h4>
+    <div class="info-row"><span class="info-label">訂房人</span><span class="info-value">WANG HSIU JU</span></div>
+    <div class="info-row"><span class="info-label">預約號碼</span><span class="info-value mono">6752.101.658</span></div>
+    <div class="info-row"><span class="info-label">PIN</span><span class="info-value mono">5666</span></div>
+    <div class="info-row"><span class="info-label">平台</span><span class="info-value">Booking.com</span></div>
+    <div class="info-row"><span class="info-label">餐食</span><span class="info-value">不含餐</span></div>
+  </div>
+</div>
+
+<!-- Insurance -->
+<div class="section" id="insurance">
+  <div class="section-title"><span class="icon">🛡</span> 保險</div>
+  <div class="info-card">
+    <h4>旅行不便險</h4>
+    <div class="info-row"><span class="info-label">保險公司</span><span class="info-value">美商安達 (Chubb)</span></div>
+    <div class="info-row"><span class="info-label">保單號碼</span><span class="info-value mono">EWRTWAA0699147</span></div>
+    <div class="info-row"><span class="info-label">效期</span><span class="info-value">02/17 21:00 ~ 02/28 21:00</span></div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>Built for offline use &middot; Add to Home Screen for best experience</p>
+</div>
+
+<!-- Install Banner -->
+<div class="install-banner" id="installBanner">
+  <button class="dismiss" onclick="dismissInstall()">&times;</button>
+  <strong>加入主畫面</strong>
+  <div style="font-size:.85rem;color:var(--text2);margin-top:4px">離線也能查看行程</div>
+  <button class="btn" id="installBtn">安裝</button>
+</div>
+
+<script>
+// Accordion
+function toggle(el){el.closest('.day-card').classList.toggle('open')}
+
+// Open today's card automatically
+(function(){
+  const now=new Date();
+  const m=now.getMonth(),d=now.getDate(),y=now.getFullYear();
+  if(y===2026&&m===1){
+    const dayMap={17:1,18:2,19:3,20:4,21:5,22:6,23:7,24:8,25:9,26:10,27:11};
+    if(dayMap[d]){
+      const card=document.querySelector('#day-'+dayMap[d]+' .day-card');
+      if(card)card.classList.add('open');
+      const navLink=document.querySelector('a[href="#day-'+dayMap[d]+'"]');
+      if(navLink)navLink.classList.add('today');
+    }
+  }
+})();
+
+// Snowfall + Pikmin
+(function(){
+  const c=document.getElementById('snow'),ctx=c.getContext('2d');
+  let w,h,flakes=[],pikmins=[];
+  const PI=Math.PI;
+
+  // Pikmin types: color, leaf/flower color, flower type
+  const types=[
+    {body:'#e84040',leaf:'#4caf50',type:'leaf'},      // Red - leaf
+    {body:'#4488dd',leaf:'#4caf50',type:'leaf'},       // Blue - leaf
+    {body:'#a8d8ea',leaf:'#e0f0ff',type:'ice'},        // Ice - crystal
+    {body:'#f5e642',leaf:'#fff',type:'flower'},        // Yellow - daisy
+    {body:'#9c5fbf',leaf:'#e84090',type:'flower'},     // Purple - rose
+  ];
+
+  function drawPikmin(p){
+    const s=p.size, x=p.x, baseY=p.groundY;
+    const bounce=Math.abs(Math.sin(p.phase))*3*s/14;
+    const y=baseY-bounce;
+    const lean=Math.sin(p.phase)*0.08*p.dir;
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.rotate(lean);
+
+    // Legs (two little stubs)
+    const legSwing=Math.sin(p.phase)*3;
+    ctx.fillStyle=p.c.body;
+    ctx.beginPath();ctx.ellipse(-s*0.2,s*0.05+legSwing,s*0.1,s*0.18,0,0,PI*2);ctx.fill();
+    ctx.beginPath();ctx.ellipse(s*0.2,s*0.05-legSwing,s*0.1,s*0.18,0,0,PI*2);ctx.fill();
+
+    // Body
+    ctx.fillStyle=p.c.body;
+    ctx.beginPath();ctx.ellipse(0,-s*0.25,s*0.35,s*0.4,0,0,PI*2);ctx.fill();
+
+    // Eyes
+    const ex=s*0.12*p.dir, ey=-s*0.3;
+    ctx.fillStyle='#fff';
+    ctx.beginPath();ctx.arc(ex-s*0.08,ey,s*0.1,0,PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(ex+s*0.12,ey,s*0.1,0,PI*2);ctx.fill();
+    ctx.fillStyle='#222';
+    ctx.beginPath();ctx.arc(ex-s*0.05,ey,s*0.05,0,PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(ex+s*0.15,ey,s*0.05,0,PI*2);ctx.fill();
+
+    // Nose (little pointy thing)
+    ctx.fillStyle=p.c.body;
+    ctx.beginPath();
+    ctx.moveTo(s*0.25*p.dir,-s*0.25);
+    ctx.lineTo(s*0.45*p.dir,-s*0.22);
+    ctx.lineTo(s*0.25*p.dir,-s*0.18);
+    ctx.fill();
+
+    // Stem
+    const stemTop=-s*0.85;
+    ctx.strokeStyle='#4caf50';
+    ctx.lineWidth=s*0.06;
+    ctx.beginPath();
+    ctx.moveTo(0,-s*0.6);
+    ctx.quadraticCurveTo(s*0.1*Math.sin(p.phase*0.7),stemTop+s*0.15,0,stemTop);
+    ctx.stroke();
+
+    // Top decoration
+    if(p.c.type==='leaf'){
+      ctx.fillStyle=p.c.leaf;
+      ctx.beginPath();
+      ctx.ellipse(s*0.05,stemTop,s*0.15,s*0.08,0.5,0,PI*2);ctx.fill();
+    }else if(p.c.type==='flower'){
+      const fc=p.c.leaf;
+      for(let i=0;i<5;i++){
+        const a=PI*2/5*i+p.phase*0.2;
+        ctx.fillStyle=fc;
+        ctx.beginPath();ctx.ellipse(Math.cos(a)*s*0.1,stemTop+Math.sin(a)*s*0.1,s*0.08,s*0.06,a,0,PI*2);ctx.fill();
+      }
+      ctx.fillStyle='#ffe066';
+      ctx.beginPath();ctx.arc(0,stemTop,s*0.06,0,PI*2);ctx.fill();
+    }else if(p.c.type==='ice'){
+      // Crystal top
+      ctx.fillStyle='rgba(200,230,255,0.8)';
+      ctx.beginPath();
+      ctx.moveTo(0,stemTop-s*0.15);
+      ctx.lineTo(-s*0.1,stemTop);
+      ctx.lineTo(0,stemTop-s*0.05);
+      ctx.lineTo(s*0.1,stemTop);
+      ctx.closePath();ctx.fill();
+      ctx.strokeStyle='rgba(255,255,255,0.6)';
+      ctx.lineWidth=s*0.03;
+      ctx.stroke();
+    }
+
+    ctx.restore();
+  }
+
+  function makePikmin(){
+    const t=types[Math.floor(Math.random()*types.length)];
+    const s=12+Math.random()*8;
+    const dir=Math.random()>0.5?1:-1;
+    return {
+      x:dir>0?-20:w+20,
+      groundY:h-8-Math.random()*15,
+      size:s,dir:dir,
+      speed:(0.3+Math.random()*0.5)*dir,
+      phase:Math.random()*PI*2,
+      c:t
+    };
+  }
+
+  function resize(){
+    w=c.width=c.offsetWidth;h=c.height=c.offsetHeight;
+    flakes=Array.from({length:40},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+1,dx:Math.random()*.5-.25,dy:Math.random()*1+.5}));
+    pikmins=Array.from({length:4},()=>{const p=makePikmin();p.x=Math.random()*w;return p});
+  }
+  resize();window.addEventListener('resize',resize);
+
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+
+    // Snow
+    ctx.fillStyle='#fff';
+    flakes.forEach(f=>{
+      ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,PI*2);ctx.fill();
+      f.x+=f.dx;f.y+=f.dy;
+      if(f.y>h){f.y=0;f.x=Math.random()*w}
+      if(f.x>w)f.x=0;if(f.x<0)f.x=w;
+    });
+
+    // Pikmin
+    pikmins.forEach(p=>{
+      p.x+=p.speed;
+      p.phase+=0.12;
+      drawPikmin(p);
+      // Reset when off screen
+      if((p.dir>0&&p.x>w+30)||(p.dir<0&&p.x<-30)){
+        Object.assign(p,makePikmin());
+      }
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// Nav highlight on scroll
+const sections=document.querySelectorAll('.section[id]');
+const navLinks=document.querySelectorAll('.nav a');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){
+    navLinks.forEach(l=>l.classList.remove('active'));
+    const link=document.querySelector('.nav a[href="#'+e.target.id+'"]');
+    if(link){link.classList.add('active');link.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'})}
+  }})
+},{threshold:.3,rootMargin:'-60px 0px -60% 0px'});
+sections.forEach(s=>obs.observe(s));
+
+// PWA Install
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;
+  document.getElementById('installBanner').style.display='block'});
+document.getElementById('installBtn').addEventListener('click',async()=>{
+  if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;
+    document.getElementById('installBanner').style.display='none'}});
+function dismissInstall(){document.getElementById('installBanner').style.display='none'}
+
+// Register SW
+if('serviceWorker'in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+</script>
+</body>
+</html>
