@@ -61,7 +61,7 @@ body{
 .hero .dates{color:var(--text2);font-size:.95rem;margin-top:8px;position:relative}
 .hero .tag-row{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap;position:relative}
 .tag{
-  display:inline-flex;align-items:center;gap:4px;
+  display:inline-flex;align-items:center;gap:4px;text-decoration:none;color:inherit;
   padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600;
   background:rgba(255,255,255,.08);backdrop-filter:blur(8px);
   border:1px solid rgba(255,255,255,.1);
@@ -208,11 +208,12 @@ body{
   <h1><span>北海道</span> 冬日旅行</h1>
   <div class="dates">2026/02/17 (二) - 02/28 (六) &middot; 11 天</div>
   <div class="tag-row">
-    <span class="tag">知床</span>
-    <span class="tag">釧路</span>
-    <span class="tag">旭川</span>
-    <span class="tag">富良野</span>
-    <span class="tag">美瑛</span>
+    <a href="#day-2" class="tag">知床</a>
+    <a href="#day-4" class="tag">釧路</a>
+    <a href="#day-6" class="tag">旭川</a>
+    <a href="#day-9" class="tag">富良野</a>
+    <a href="#day-10" class="tag">美瑛</a>
+    <a href="#day-11" class="tag">札幌</a>
   </div>
 </div>
 
@@ -537,7 +538,7 @@ body{
 <div class="day-card">
   <div class="day-header" onclick="toggle(this)">
     <div class="day-num c-pink"><div>02/27</div><div>五</div></div>
-    <div class="day-info"><h3>美瑛 → 旭川 → 千歲</h3><div class="location">還車，JR 南下</div></div>
+    <div class="day-info"><h3>美瑛 → 旭川 → 札幌 → 千歲</h3><div class="location">還車，札幌半日遊，JR 南下</div></div>
     <div class="day-chevron">&#x25BC;</div>
   </div>
   <div class="day-body"><div class="day-content">
@@ -548,9 +549,19 @@ body{
         <div class="tl-desc">自駕結束</div>
       </div>
       <div class="tl-item"><div class="tl-dot transport"></div>
-        <div class="tl-time">午後</div>
-        <div class="tl-title">旭川 → 千歲 (JR)</div>
-        <div class="tl-desc">特急列車南下</div>
+        <div class="tl-time">13:00</div>
+        <div class="tl-title">特急ライラック 22 號 旭川 → 札幌</div>
+        <div class="tl-desc">14:25 抵達札幌｜¥4,690/人｜約 1h25m<br><span class="badge badge-booking">備選 12:00 ライラック 20 號 (13:25 到)</span></div>
+      </div>
+      <div class="tl-item"><div class="tl-dot activity"></div>
+        <div class="tl-time">14:30</div>
+        <div class="tl-title">札幌半日遊 (~5.5h)</div>
+        <div class="tl-desc">狸小路商店街、時計台、大通公園、二條市場<br>札幌站周邊逛街購物</div>
+      </div>
+      <div class="tl-item"><div class="tl-dot transport"></div>
+        <div class="tl-time">~20:00</div>
+        <div class="tl-title">快速エアポート 札幌 → 千歲</div>
+        <div class="tl-desc">每 15 分鐘一班｜約 30 分鐘<br>千歲站下車 (非新千歲空港站)</div>
       </div>
       <div class="tl-item"><div class="tl-dot hotel"></div>
         <div class="tl-time">入住</div>
@@ -626,6 +637,22 @@ body{
     <div class="info-row"><span class="info-label">取車</span><span class="info-value">02/25 11:00</span></div>
     <div class="info-row"><span class="info-label">還車</span><span class="info-value">02/27 12:00 原店</span></div>
     <div class="info-row"><span class="info-label">預約號碼</span><span class="info-value mono">26012301772</span></div>
+  </div>
+
+  <div class="info-card">
+    <h4>02/27 (五) 旭川 → 札幌 → 千歲</h4>
+    <div class="info-row"><span class="info-label">第一段</span><span class="info-value">JR 特急ライラック 22 號</span></div>
+    <div class="info-row"><span class="info-label">發車</span><span class="info-value">13:00 旭川</span></div>
+    <div class="info-row"><span class="info-label">抵達</span><span class="info-value">14:25 札幌</span></div>
+    <div class="info-row"><span class="info-label">票價</span><span class="info-value">¥4,690 / 人</span></div>
+    <div class="info-row"><span class="info-label">備選</span><span class="info-value">12:00 ライラック 20 號 → 13:25 到</span></div>
+    <div class="info-row"><span class="info-label">班距</span><span class="info-value">每 30 分鐘一班</span></div>
+    <div style="border-top:1px solid rgba(255,255,255,.06);margin:10px 0"></div>
+    <div class="info-row"><span class="info-label">第二段</span><span class="info-value">JR 快速エアポート</span></div>
+    <div class="info-row"><span class="info-label">發車</span><span class="info-value">~20:00 札幌</span></div>
+    <div class="info-row"><span class="info-label">抵達</span><span class="info-value">~20:30 千歲</span></div>
+    <div class="info-row"><span class="info-label">班距</span><span class="info-value">每 15 分鐘一班</span></div>
+    <div class="info-row"><span class="info-label">備註</span><span class="info-value">千歲站下車 (非新千歲空港站)</span></div>
   </div>
 </div>
 
