@@ -206,7 +206,7 @@ body{
 <div class="hero">
   <canvas class="hero-snow" id="snow"></canvas>
   <h1><span>北海道</span> 冬日旅行</h1>
-  <div class="dates">2026/02/17 (二) - 02/28 (六) &middot; 11 天</div>
+  <div class="dates">2026/02/17 (二) - 02/28 (六) &middot; 12 天</div>
   <div class="tag-row">
     <a href="#day-2" class="tag">知床</a>
     <a href="#day-4" class="tag">釧路</a>
@@ -224,7 +224,7 @@ body{
     <a href="#day-1">D1</a><a href="#day-2">D2</a><a href="#day-3">D3</a>
     <a href="#day-4">D4</a><a href="#day-5">D5</a><a href="#day-6">D6</a>
     <a href="#day-7">D7</a><a href="#day-8">D8</a><a href="#day-9">D9</a>
-    <a href="#day-10">D10</a><a href="#day-11">D11</a>
+    <a href="#day-10">D10</a><a href="#day-11">D11</a><a href="#day-12">D12</a>
     <a href="#transport">交通</a>
     <a href="#hotels">住宿</a>
     <a href="#insurance">保險</a>
@@ -237,14 +237,23 @@ body{
   <div class="info-card">
     <h4>02/17 (二) 台北 → 東京</h4>
     <div class="info-row"><span class="info-label">航班</span><span class="info-value">樂桃 MM860</span></div>
-    <div class="info-row"><span class="info-label">起飛</span><span class="info-value">桃園 TPE T1</span></div>
-    <div class="info-row"><span class="info-label">抵達</span><span class="info-value">羽田 HND T3 (00:50+1)</span></div>
+    <div class="info-row"><span class="info-label">起飛</span><span class="info-value">桃園 TPE T1 20:55</span></div>
+    <div class="info-row"><span class="info-label">抵達</span><span class="info-value">羽田 HND T3 00:50+1</span></div>
+    <div class="info-row"><span class="info-label">訂位代號</span><span class="info-value mono">WNEWPY</span></div>
   </div>
   <div class="info-card">
     <h4>02/18 (三) 東京 → 女滿別</h4>
     <div class="info-row"><span class="info-label">航班</span><span class="info-value">Air Do HD075</span></div>
     <div class="info-row"><span class="info-label">起飛</span><span class="info-value">羽田 HND T2 07:00</span></div>
-    <div class="info-row"><span class="info-label">抵達</span><span class="info-value">女滿別 MMB</span></div>
+    <div class="info-row"><span class="info-label">抵達</span><span class="info-value">女滿別 MMB 08:50</span></div>
+    <div class="info-row"><span class="info-label">訂位代號</span><span class="info-value mono">265622822</span></div>
+  </div>
+  <div class="info-card">
+    <h4>02/28 (六) 札幌 → 台北</h4>
+    <div class="info-row"><span class="info-label">航班</span><span class="info-value">越捷 VZ571</span></div>
+    <div class="info-row"><span class="info-label">起飛</span><span class="info-value">新千歲 CTS 09:30</span></div>
+    <div class="info-row"><span class="info-label">抵達</span><span class="info-value">桃園 TPE 13:30</span></div>
+    <div class="info-row"><span class="info-label">訂位代號</span><span class="info-value mono">YJ4HVS</span></div>
   </div>
 </div>
 
@@ -259,7 +268,7 @@ body{
   <div class="day-body"><div class="day-content">
     <div class="tl">
       <div class="tl-item"><div class="tl-dot flight"></div>
-        <div class="tl-time">晚間</div>
+        <div class="tl-time">20:55</div>
         <div class="tl-title">樂桃 MM860 桃園 → 羽田</div>
         <div class="tl-desc">紅眼班機，隔天 00:50 抵達羽田 T3</div>
       </div>
@@ -286,7 +295,7 @@ body{
       <div class="tl-item"><div class="tl-dot flight"></div>
         <div class="tl-time">07:00</div>
         <div class="tl-title">Air Do HD075 羽田 T2 → 女滿別</div>
-        <div class="tl-desc">約 1h45m 航程</div>
+        <div class="tl-desc">約 1h50m 航程，08:50 抵達</div>
       </div>
       <div class="tl-item"><div class="tl-dot transport"></div>
         <div class="tl-time">09:35</div>
@@ -573,6 +582,31 @@ body{
 </div>
 </div>
 
+<!-- Day 12 -->
+<div class="section" id="day-12">
+<div class="day-card">
+  <div class="day-header" onclick="toggle(this)">
+    <div class="day-num c-pink"><div>02/28</div><div>六</div></div>
+    <div class="day-info"><h3>回程：新千歲 → 桃園</h3><div class="location">越捷 VZ571 回台灣</div></div>
+    <div class="day-chevron">&#x25BC;</div>
+  </div>
+  <div class="day-body"><div class="day-content">
+    <div class="tl">
+      <div class="tl-item"><div class="tl-dot transport"></div>
+        <div class="tl-time">早上</div>
+        <div class="tl-title">JR 千歲站 → 新千歲空港</div>
+        <div class="tl-desc">JR 快速エアポート，約 10 分鐘</div>
+      </div>
+      <div class="tl-item"><div class="tl-dot flight"></div>
+        <div class="tl-time">09:30</div>
+        <div class="tl-title">越捷 VZ571 新千歲 → 桃園</div>
+        <div class="tl-desc">13:30 抵達桃園 TPE<br><span class="badge badge-booking">訂位代號 YJ4HVS</span></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+</div>
+
 <!-- Transport -->
 <div class="section" id="transport">
   <div class="section-title"><span class="icon">🚃</span> 交通詳細</div>
@@ -747,7 +781,7 @@ function toggle(el){el.closest('.day-card').classList.toggle('open')}
   const now=new Date();
   const m=now.getMonth(),d=now.getDate(),y=now.getFullYear();
   if(y===2026&&m===1){
-    const dayMap={17:1,18:2,19:3,20:4,21:5,22:6,23:7,24:8,25:9,26:10,27:11};
+    const dayMap={17:1,18:2,19:3,20:4,21:5,22:6,23:7,24:8,25:9,26:10,27:11,28:12};
     if(dayMap[d]){
       const card=document.querySelector('#day-'+dayMap[d]+' .day-card');
       if(card)card.classList.add('open');

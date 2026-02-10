@@ -1,4 +1,4 @@
-const CACHE = 'hokkaido-2026-v9';
+const CACHE = 'hokkaido-2026-v12';
 const ASSETS = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', e => {
